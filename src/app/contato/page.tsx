@@ -1,7 +1,16 @@
+import Link from "next/link";
+
 export default function ContactPage() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-12 sm:px-8 lg:py-16">
-      <header className="max-w-3xl">
+      <Link
+        href="/"
+        className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:opacity-80"
+      >
+        ← Voltar para home
+      </Link>
+
+      <header className="max-w-3xl mt-8">
         <p className="text-sm uppercase tracking-[0.3em] text-primary">Contato</p>
         <h1 className="mt-4 text-4xl font-semibold leading-tight">Vamos conversar sobre o seu plano para o agro?</h1>
         <p className="mt-4 text-lg text-text-muted">

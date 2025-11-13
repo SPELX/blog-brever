@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { LazyLoad } from "@/components/LazyLoad";
 import type { Post } from "@/data/posts";
 
 interface FeaturedPostProps {
@@ -8,6 +9,7 @@ interface FeaturedPostProps {
 
 export function FeaturedPost({ post }: FeaturedPostProps) {
   return (
+    <LazyLoad animation="scale">
     <article className="group relative overflow-hidden rounded-[32px] border border-border bg-card text-text shadow-card-soft">
       <div className="relative h-[360px] w-full">
         <Image
@@ -50,5 +52,6 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
         </div>
       </div>
     </article>
+    </LazyLoad>
   );
 }

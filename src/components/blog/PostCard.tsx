@@ -1,14 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
+import { LazyLoad } from "@/components/LazyLoad";
 import type { Post } from "@/data/posts";
 
 interface PostCardProps {
   post: Post;
+  delay?: number;
 }
 
-export function PostCard({ post }: PostCardProps) {
+export function PostCard({ post, delay = 0 }: PostCardProps) {
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card-soft transition hover:-translate-y-1 hover:shadow-2xl">
+    <LazyLoad delay={delay} animation="fade-up">
+      <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card-soft transition hover:-translate-y-1 hover:shadow-2xl">
       <div className="relative h-48 w-full overflow-hidden">
         <Image
           src={post.image}
@@ -50,5 +53,6 @@ export function PostCard({ post }: PostCardProps) {
         </div>
       </div>
     </article>
+    </LazyLoad>
   );
 }
