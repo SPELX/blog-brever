@@ -1,65 +1,134 @@
-import Image from "next/image";
+import Link from "next/link";
+import { CategoryFilter } from "@/components/blog/CategoryFilter";
+import { FeaturedPost } from "@/components/blog/FeaturedPost";
+import { NewsletterCTA } from "@/components/blog/NewsletterCTA";
+import { PostGrid } from "@/components/blog/PostGrid";
+import { HeroNav } from "@/components/HeroNav";
+import {
+  categories,
+  highlightedCategories,
+  posts,
+} from "@/data/posts";
 
 export default function Home() {
+  const featuredPost = posts.find((post) => post.isFeatured) ?? posts[0];
+  const recentPosts = posts.filter((post) => post.id !== featuredPost?.id);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="min-h-screen bg-bg text-text">
+      <div
+        id="hero"
+        className="relative isolate mb-12 w-full bg-[linear-gradient(135deg,rgba(5,5,5,0.5),rgba(5,5,5,0.25)),url('/assets/bg-hero.jpg')] bg-cover bg-center pb-16 sm:pb-20"
+      >
+        <div className="absolute inset-0 bg-[rgba(0,0,0,0.08)]" />
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-4 py-12 sm:px-8 lg:py-16">
+          <HeroNav />
+          <section className="relative w-full overflow-hidden rounded-[40px] border border-border bg-card px-6 py-10 shadow-card-soft sm:px-10">
+            <div className="absolute inset-0 bg-gradient-to-br from-bg via-bg-muted to-transparent opacity-70" />
+            <div className="relative z-10 flex flex-col gap-8">
+              <div className="space-y-4">
+                <p className="text-sm uppercase tracking-[0.3em] text-primary">
+                  Blog Brever
+                </p>
+                <h1 className="max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
+                  Insights que transformam o agro.
+                </h1>
+                <p className="max-w-2xl text-lg text-text-muted">
+                  Notícias, dicas e aprendizados sobre gestão agrícola, produtividade e tecnologia no campo.
+                </p>
+              </div>
+              <form className="flex flex-col gap-4 sm:flex-row">
+                <label className="flex-1">
+                  <span className="sr-only">Buscar artigo</span>
+                  <div className="flex items-center gap-3 rounded-3xl border border-border bg-bg px-5 py-3 shadow-inner">
+                    <span aria-hidden>🔍</span>
+                    <input
+                      type="search"
+                      placeholder="Busque por tema, cultura ou tecnologia"
+                      className="w-full border-0 bg-transparent text-base text-text placeholder:text-text-muted focus:outline-none"
+                    />
+                  </div>
+                </label>
+                <button
+                  type="submit"
+                  className="rounded-3xl bg-primary px-8 py-3 text-base font-semibold text-primaryFg shadow-card-soft transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  Buscar agora
+                </button>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <main className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 pb-10 pt-0 sm:px-8 lg:gap-14 lg:pb-16">
+        <CategoryFilter
+          categories={categories}
+          activeCategory="Agronegócio"
+          className="sticky top-4 z-30 -mt-16 sm:top-6 sm:-mt-20 lg:top-8 lg:-mt-24"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+
+        {featuredPost && <FeaturedPost post={featuredPost} />}
+
+        <section className="space-y-6">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm uppercase tracking-[0.4em] text-primary">
+                Conteúdo fresco
+              </p>
+              <h2 className="text-3xl font-semibold">
+                Artigos recentes
+              </h2>
+            </div>
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2 text-sm font-semibold text-text transition hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              Ativar alerta semanal <span aria-hidden>→</span>
+            </button>
+          </div>
+          <PostGrid posts={recentPosts} />
+          <div className="flex justify-center">
+            <button
+              type="button"
+              className="rounded-full border border-border px-6 py-3 text-sm font-semibold text-text transition hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+              Carregar mais artigos
+            </button>
+          </div>
+        </section>
+
+        <section className="grid gap-4 rounded-[32px] border border-border bg-bg-muted p-6 sm:grid-cols-3">
+          {highlightedCategories.map((item) => (
+            <Link
+              key={item.slug}
+              className="group flex flex-col gap-2 rounded-3xl border border-transparent bg-card p-5 text-text shadow-card-soft transition hover:-translate-y-1 hover:border-primary hover:shadow-2xl"
+              href={`/blog/categoria/${item.slug}`}
+            >
+              <h3 className="text-lg font-semibold">{item.title}</h3>
+              <p className="text-sm text-text-muted">
+                {item.description}
+              </p>
+              <span className="text-sm font-semibold text-primary transition group-hover:text-primary">
+                Explorar categoria →
+              </span>
+            </Link>
+          ))}
+        </section>
+
+        <NewsletterCTA />
       </main>
+
+      <footer className="border-t border-border bg-[hsla(var(--card)/0.85)] py-6 text-sm text-text-muted">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+          <div className="flex flex-wrap gap-4 font-medium text-text">
+            <Link href="/blog">Blog</Link>
+            <Link href="/contato">Contato</Link>
+            <Link href="/politica-de-privacidade">Política de Privacidade</Link>
+          </div>
+          <p className="text-text-muted">© 2025 Brever — Gestão Inteligente para o Agro.</p>
+        </div>
+      </footer>
     </div>
   );
 }
