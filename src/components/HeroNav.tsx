@@ -48,15 +48,15 @@ export function HeroNav() {
         aria-expanded={isOpen}
         onClick={handleToggle}
       >
-        <span className="relative block h-3.5 w-5">
+        <span className="relative block h-5 w-5">
           <span
-            className={`absolute block h-0.5 w-full rounded bg-current transition-transform duration-300 ${isOpen ? "translate-y-1.5 rotate-45" : "-translate-y-1"}`}
+            className={`absolute left-0 top-1/2 block h-0.5 w-full rounded bg-current transition-all duration-300 ${isOpen ? "rotate-45 translate-y-0" : "-translate-y-1.5"}`}
           />
           <span
-            className={`absolute block h-0.5 w-full rounded bg-current transition-opacity duration-300 ${isOpen ? "opacity-0" : "opacity-100"}`}
+            className={`absolute left-0 top-1/2 block h-0.5 w-full rounded bg-current transition-all duration-300 ${isOpen ? "opacity-0" : "opacity-100 translate-y-0"}`}
           />
           <span
-            className={`absolute block h-0.5 w-full rounded bg-current transition-transform duration-300 ${isOpen ? "-translate-y-1.5 -rotate-45" : "translate-y-1"}`}
+            className={`absolute left-0 top-1/2 block h-0.5 w-full rounded bg-current transition-all duration-300 ${isOpen ? "-rotate-45 translate-y-0" : "translate-y-1.5"}`}
           />
         </span>
       </button>
