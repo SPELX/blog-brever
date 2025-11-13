@@ -19,8 +19,13 @@ export async function generateStaticParams() {
   return Object.keys(categoryMap).map((slug) => ({ slug }));
 }
 
-export default function BlogCategoryPage({ params }: { params: { slug: string } }) {
-  const category = categoryMap[params.slug];
+export default async function BlogCategoryPage({
+  params
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params;
+  const category = categoryMap[slug];
 
   if (!category) {
     notFound();
