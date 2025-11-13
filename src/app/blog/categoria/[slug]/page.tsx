@@ -13,6 +13,8 @@ const categoryMap = categories.reduce<Record<string, { id: Category; label: stri
   {},
 );
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   return Object.keys(categoryMap).map((slug) => ({ slug }));
 }

@@ -28,17 +28,17 @@ export const highlightedCategories = [
   {
     title: "📈 Gestão eficiente no campo",
     description: "Planejamento de safra, custos e KPIs para equipes dispersas.",
-    slug: "gestao-eficiente",
+    slug: "gestao-de-frotas",
   },
   {
     title: "💡 Inovações e tecnologia agrícola",
     description: "Sensores, IA e conectividade elevando a produtividade.",
-    slug: "inovacao-tecnologia",
+    slug: "tecnologia",
   },
   {
     title: "🌱 Solo e sustentabilidade",
     description: "Boas práticas de manejo e redução de impactos ambientais.",
-    slug: "solo-sustentavel",
+    slug: "agronegocio",
   },
 ];
 
