@@ -11,9 +11,31 @@ import {
   posts,
 } from "@/data/posts";
 
-export default function Home() {
+type HomeProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function Home({ searchParams }: HomeProps) {
+  const params = searchParams ? await searchParams : {};
+  const rawSearch = params.search;
+  const searchParam = Array.isArray(rawSearch) ? rawSearch[0] : rawSearch;
+  const searchTerm = searchParam?.trim() ?? "";
+  const normalizedTerm = searchTerm.toLowerCase();
+
   const featuredPost = posts.find((post) => post.isFeatured) ?? posts[0];
-  const recentPosts = posts.filter((post) => post.id !== featuredPost?.id);
+  const remainingPosts = featuredPost
+    ? posts.filter((post) => post.id !== featuredPost.id)
+    : posts;
+
+  const searchActive = normalizedTerm.length > 0;
+  const recentPosts = searchActive
+    ? remainingPosts.filter((post) =>
+        [post.title, post.excerpt, post.category]
+          .join(" ")
+          .toLowerCase()
+          .includes(normalizedTerm),
+      )
+    : remainingPosts;
 
   return (
     <div className="min-h-screen bg-bg text-text">
@@ -38,7 +60,7 @@ export default function Home() {
                   Notícias, dicas e aprendizados sobre gestão agrícola, produtividade e tecnologia no campo.
                 </p>
               </div>
-              <SearchForm />
+              <SearchForm initialQuery={searchTerm} />
             </div>
           </section>
         </div>
@@ -53,7 +75,7 @@ export default function Home() {
 
         {featuredPost && <FeaturedPost post={featuredPost} />}
 
-        <section className="space-y-6">
+        <section id="recent-posts" className="space-y-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm uppercase tracking-[0.4em] text-primary">
@@ -70,15 +92,41 @@ export default function Home() {
               Ativar alerta semanal <span aria-hidden>→</span>
             </button>
           </div>
-          <PostGrid posts={recentPosts} />
-          <div className="flex justify-center">
-            <button
-              type="button"
-              className="rounded-full border border-border px-6 py-3 text-sm font-semibold text-text transition hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              Carregar mais artigos
-            </button>
-          </div>
+          {searchActive && (
+            <p className="text-sm text-text-muted">
+              {recentPosts.length > 0 ? (
+                <>
+                  {recentPosts.length} resultados para{" "}
+                  <strong>&ldquo;{searchTerm}&rdquo;</strong>
+                </>
+              ) : (
+                <>
+                  Nenhum artigo encontrado para{" "}
+                  <strong>&ldquo;{searchTerm}&rdquo;</strong>
+                </>
+              )}
+            </p>
+          )}
+          {recentPosts.length > 0 ? (
+            <>
+              <PostGrid
+                posts={recentPosts}
+                highlightTerm={searchActive ? searchTerm : undefined}
+              />
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  className="rounded-full border border-border px-6 py-3 text-sm font-semibold text-text transition hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  Carregar mais artigos
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="rounded-3xl border border-border bg-card p-6 text-center text-text-muted">
+              Tente outra palavra-chave ou explore as categorias em destaque abaixo.
+            </div>
+          )}
         </section>
 
         <section className="grid gap-4 rounded-[32px] border border-border bg-bg-muted p-6 sm:grid-cols-3">

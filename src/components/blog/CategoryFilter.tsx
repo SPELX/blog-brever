@@ -30,7 +30,7 @@ export function CategoryFilter({
       {options.map((option) => {
         const current = option === "Todos" ? null : categories.find((cat) => cat.id === option);
         const isActive = activeCategory === option;
-        const href = option === "Todos" ? "/" : `/blog/categoria/${slugify(option)}`;
+        const href = option === "Todos" ? "/blog" : `/blog/categoria/${slugify(option)}`;
 
         const buttonClassName = `flex items-center gap-2 rounded-2xl border px-4 py-2 text-sm font-medium transition-all sm:text-base ${
           isActive

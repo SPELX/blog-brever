@@ -1,19 +1,33 @@
 "use client";
 
-export function SearchForm() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const searchTerm = formData.get('search');
-    if (searchTerm) {
-      console.log('Buscar:', searchTerm);
-      // TODO: Implementar funcionalidade de busca
-    }
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+interface SearchFormProps {
+  initialQuery?: string;
+}
+
+export function SearchForm({ initialQuery = "" }: SearchFormProps) {
+  const [value, setValue] = useState(initialQuery);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setValue(initialQuery);
+  }, [initialQuery]);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const term = value.trim();
+    const queryString = term ? `?search=${encodeURIComponent(term)}` : "";
+    const hash = "#recent-posts";
+    router.push(`${pathname}${queryString}${hash}`);
   };
 
   return (
     <form
       className="flex flex-col gap-4 sm:flex-row sm:items-stretch"
+      role="search"
       onSubmit={handleSubmit}
     >
       <label className="flex-1">
@@ -23,6 +37,8 @@ export function SearchForm() {
           <input
             type="search"
             name="search"
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
             placeholder="Busque por tema, cultura ou tecnologia"
             className="w-full border-0 bg-transparent text-base text-text placeholder:text-text-muted focus:outline-none"
           />

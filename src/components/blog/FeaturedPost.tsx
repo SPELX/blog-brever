@@ -13,14 +13,14 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
     <article className="group relative overflow-hidden rounded-[32px] border border-border bg-card text-text shadow-card-soft">
       <div className="relative h-[360px] w-full">
         <Image
-          src="/assets/seja-destaque.jpg"
+          src={post.image}
           alt={post.title}
           fill
           priority
           className="object-cover transition duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 origin-center bg-gradient-to-t from-black/80 via-black/30 to-transparent transition duration-700 group-hover:scale-105 dark:from-black/90 dark:via-black/60" />
-        <div className="absolute left-6 top-6 inline-flex items-center gap-2 rounded-full border border-border bg-[hsla(var(--card)/0.85)] px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-text-invert">
+        <div className="absolute left-6 top-6 inline-flex items-center gap-2 rounded-full border border-primary bg-primary px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primaryFg shadow-card-soft">
           <span>Artigo em destaque</span>
           <span aria-hidden>🔥</span>
         </div>

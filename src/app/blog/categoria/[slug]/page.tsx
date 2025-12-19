@@ -36,10 +36,10 @@ export default async function BlogCategoryPage({
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-8">
       <Link
-        href="/"
+        href="/blog"
         className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:opacity-80"
       >
-        ← Voltar para home
+        ← Voltar para o blog
       </Link>
 
       <header className="mt-8 rounded-[32px] border border-border bg-card p-8 shadow-card-soft">
