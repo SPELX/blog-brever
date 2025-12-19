@@ -5,7 +5,14 @@ import { slugify } from "@/lib/slug";
 export default function BlogCategoriesPage() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-12 sm:px-8">
-      <header className="max-w-3xl">
+      <Link
+        href="/blog"
+        className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:opacity-80"
+      >
+        ← Voltar para o blog
+      </Link>
+
+      <header className="max-w-3xl mt-8">
         <p className="text-sm uppercase tracking-[0.3em] text-primary">Categorias do blog</p>
         <h1 className="mt-4 text-4xl font-semibold">Navegue pelos temas do agro.</h1>
         <p className="mt-3 text-lg text-text-muted">

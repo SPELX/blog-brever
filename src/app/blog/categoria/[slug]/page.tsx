@@ -13,12 +13,19 @@ const categoryMap = categories.reduce<Record<string, { id: Category; label: stri
   {},
 );
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   return Object.keys(categoryMap).map((slug) => ({ slug }));
 }
 
-export default function BlogCategoryPage({ params }: { params: { slug: string } }) {
-  const category = categoryMap[params.slug];
+export default async function BlogCategoryPage({
+  params
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params;
+  const category = categoryMap[slug];
 
   if (!category) {
     notFound();
@@ -32,7 +39,7 @@ export default function BlogCategoryPage({ params }: { params: { slug: string } 
         href="/blog"
         className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:opacity-80"
       >
-        ← Todas as categorias
+        ← Voltar para o blog
       </Link>
 
       <header className="mt-8 rounded-[32px] border border-border bg-card p-8 shadow-card-soft">

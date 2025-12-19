@@ -93,7 +93,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
       type="button"
       onClick={handleToggle}
       aria-label={`Ativar ${label}`}
-      className={`inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-base text-text shadow-sm backdrop-blur-md transition hover:bg-bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${className ?? ""}`}
+      className={`inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-base text-text backdrop-blur-md transition hover:bg-bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${className ?? ""}`}
     >
       <span className="sr-only">{label}</span>
       <span aria-hidden>{icon}</span>

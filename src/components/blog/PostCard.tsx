@@ -1,14 +1,39 @@
 import Image from "next/image";
 import Link from "next/link";
+import { LazyLoad } from "@/components/LazyLoad";
 import type { Post } from "@/data/posts";
 
 interface PostCardProps {
   post: Post;
+  delay?: number;
+  highlightTerm?: string;
 }
 
-export function PostCard({ post }: PostCardProps) {
+const highlightContent = (text: string, term?: string) => {
+  const normalized = term?.trim().toLowerCase();
+  if (!normalized) {
+    return text;
+  }
+
+  const escapedTerm = normalized.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`(${escapedTerm})`, "gi");
+  const parts = text.split(regex);
+
+  return parts.map((part, index) =>
+    part.toLowerCase() === normalized ? (
+      <mark key={`${part}-${index}`} className="rounded bg-primary/20 px-1">
+        {part}
+      </mark>
+    ) : (
+      <span key={`${part}-${index}`}>{part}</span>
+    ),
+  );
+};
+
+export function PostCard({ post, delay = 0, highlightTerm }: PostCardProps) {
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card-soft transition hover:-translate-y-1 hover:shadow-2xl">
+    <LazyLoad delay={delay} animation="fade-up">
+      <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card-soft transition hover:-translate-y-1 hover:shadow-2xl">
       <div className="relative h-48 w-full overflow-hidden">
         <Image
           src={post.image}
@@ -31,10 +56,10 @@ export function PostCard({ post }: PostCardProps) {
       <div className="flex flex-1 flex-col gap-4 p-6">
         <div className="flex flex-col gap-2">
           <h3 className="text-xl font-semibold text-text">
-            {post.title}
+            {highlightContent(post.title, highlightTerm)}
           </h3>
-          <p className="text-sm text-text-muted [display:-webkit-box] [-webkit-line-clamp:3] [-webkit-box-orient:vertical]">
-            {post.excerpt}
+          <p className="text-sm text-text-muted [display:-webkit-box] [-webkit-line-clamp:3] [-webkit-box-orient:vertical] overflow-hidden">
+            {highlightContent(post.excerpt, highlightTerm)}
           </p>
         </div>
         <div className="mt-auto flex items-center justify-between text-sm text-text-muted">
@@ -50,5 +75,6 @@ export function PostCard({ post }: PostCardProps) {
         </div>
       </div>
     </article>
+    </LazyLoad>
   );
 }

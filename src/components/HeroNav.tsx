@@ -3,16 +3,43 @@
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const navLinks = [
   { href: "/blog", label: "Blog" },
   { href: "/blog/categorias", label: "Categorias" },
+  { href: "/sobre", label: "Sobre" },
   { href: "/contato", label: "Contato" },
 ];
 
+const useIsDarkTheme = () => {
+  const [isDark, setIsDark] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (typeof document === "undefined") {
+      return;
+    }
+
+    const htmlEl = document.documentElement;
+    const updateThemeState = () => {
+      setIsDark(htmlEl.classList.contains("dark"));
+    };
+
+    updateThemeState();
+
+    const observer = new MutationObserver(updateThemeState);
+    observer.observe(htmlEl, { attributes: true, attributeFilter: ["class"] });
+
+    return () => observer.disconnect();
+  }, []);
+
+  return isDark;
+};
+
 export function HeroNav() {
   const [isOpen, setIsOpen] = useState(false);
+  const isDarkTheme = useIsDarkTheme();
+  const logoSrc = isDarkTheme ? "/assets/brever-logomarca_v2.svg" : "/assets/brever-logomarca.svg";
 
   const handleToggle = () => setIsOpen((prev) => !prev);
   const handleLinkClick = () => setIsOpen(false);
@@ -21,7 +48,7 @@ export function HeroNav() {
     <nav className="relative mb-8 flex flex-wrap items-center gap-4 rounded-3xl border border-border bg-[hsla(var(--card)/0.9)] px-6 py-3 text-text shadow-card-soft backdrop-blur-xl sm:rounded-full">
       <Link href="/" className="order-1 flex items-center">
         <Image
-          src="/assets/brever-logomarca.svg"
+          src={logoSrc}
           alt="Brever"
           width={120}
           height={34}
@@ -48,15 +75,15 @@ export function HeroNav() {
         aria-expanded={isOpen}
         onClick={handleToggle}
       >
-        <span className="relative block h-3.5 w-5">
+        <span className="relative block h-5 w-5">
           <span
-            className={`absolute block h-0.5 w-full rounded bg-current transition-transform duration-300 ${isOpen ? "translate-y-1.5 rotate-45" : "-translate-y-1"}`}
+            className={`absolute left-0 top-1/2 block h-0.5 w-full rounded bg-current transition-all duration-300 ${isOpen ? "rotate-45 translate-y-0" : "-translate-y-1.5"}`}
           />
           <span
-            className={`absolute block h-0.5 w-full rounded bg-current transition-opacity duration-300 ${isOpen ? "opacity-0" : "opacity-100"}`}
+            className={`absolute left-0 top-1/2 block h-0.5 w-full rounded bg-current transition-all duration-300 ${isOpen ? "opacity-0" : "opacity-100 translate-y-0"}`}
           />
           <span
-            className={`absolute block h-0.5 w-full rounded bg-current transition-transform duration-300 ${isOpen ? "-translate-y-1.5 -rotate-45" : "translate-y-1"}`}
+            className={`absolute left-0 top-1/2 block h-0.5 w-full rounded bg-current transition-all duration-300 ${isOpen ? "-rotate-45 translate-y-0" : "translate-y-1.5"}`}
           />
         </span>
       </button>

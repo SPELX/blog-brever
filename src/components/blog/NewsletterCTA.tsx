@@ -1,5 +1,8 @@
+import { LazyLoad } from "@/components/LazyLoad";
+
 export function NewsletterCTA() {
   return (
+    <LazyLoad animation="fade-up" delay={200}>
     <section className="rounded-[32px] border border-border bg-card px-8 py-10 shadow-card-soft">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="space-y-2">
@@ -43,5 +46,6 @@ export function NewsletterCTA() {
         </a>
       </div>
     </section>
+    </LazyLoad>
   );
 }
